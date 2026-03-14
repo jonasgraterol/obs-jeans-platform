@@ -5,7 +5,8 @@ set -e
 PROJECT_DIR="${1:-.}"
 INDEX="$PROJECT_DIR/public/admin/index.html"
 
-# Copy built admin files to public/
+# Remove old public/ and copy fresh from build
+rm -rf "$PROJECT_DIR/public"
 cp -r "$PROJECT_DIR/.medusa/server/public" "$PROJECT_DIR/public"
 
 # Copy favicon
