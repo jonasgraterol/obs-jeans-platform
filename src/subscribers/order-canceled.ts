@@ -35,7 +35,7 @@ export default async function orderCanceledHandler({
   const currencyCode = (order.currency_code || "MXN").toUpperCase()
 
   const formatPrice = (amount: any) => {
-    const value = Number(amount)
+    const value = Math.abs(Number(amount))
     if (!value && value !== 0) return "$0.00"
     return `$${value.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
   }
@@ -48,7 +48,7 @@ export default async function orderCanceledHandler({
           ${item.product_title}${item.variant_title ? ` — Talla ${item.variant_title}` : ""}
         </td>
         <td style="padding: 8px 0; border-bottom: 1px solid #f3f4f6; text-align: center; color: #374151; font-size: 14px;">
-          ${Number(item.quantity)}
+          ${Number(item.quantity) || 1}
         </td>
       </tr>`
     )
