@@ -1,3 +1,4 @@
+import { ModuleProvider, Modules } from "@medusajs/framework/utils"
 import OxxoProviderService from "@medusajs/payment-stripe/dist/services/stripe-oxxo"
 
 class OxxoEsProviderService extends OxxoProviderService {
@@ -18,4 +19,6 @@ class OxxoEsProviderService extends OxxoProviderService {
   }
 }
 
-export default OxxoEsProviderService
+export default ModuleProvider(Modules.PAYMENT, {
+  services: [OxxoEsProviderService],
+})
