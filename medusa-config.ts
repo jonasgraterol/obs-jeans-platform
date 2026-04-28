@@ -56,14 +56,6 @@ module.exports = defineConfig({
               apiKey: process.env.STRIPE_API_KEY,
               webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
               capture: true,
-            },
-          },
-          {
-            resolve: "./src/providers/stripe-oxxo-es",
-            id: "stripe",
-            options: {
-              apiKey: process.env.STRIPE_API_KEY,
-              webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
               oxxoExpiresDays: 3,
             },
           },
