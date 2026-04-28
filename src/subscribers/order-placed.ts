@@ -18,8 +18,6 @@ export default async function orderPlacedHandler({
       "email",
       "created_at",
       "currency_code",
-      "total",
-      "item_total",
       "shipping_total",
       "tax_total",
       "discount_total",
@@ -56,26 +54,33 @@ export default async function orderPlacedHandler({
     return `$${value.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
   }
 
-  const itemsHtml = (order.items || [])
+  const items = (order.items || []).map((item: any) => {
+    const qty = Number(item.quantity) || 1
+    const unitPrice = Number(item.unit_price) || 0
+    return { ...item, qty, unitPrice, lineTotal: unitPrice * qty }
+  })
+
+  const itemSubtotal = items.reduce((sum: number, i: any) => sum + i.lineTotal, 0)
+  const shipping = Number(order.shipping_total) || 0
+  const discount = Number(order.discount_total) || 0
+  const tax = Number(order.tax_total) || 0
+  const orderTotal = itemSubtotal + shipping - discount + tax
+
+  const itemsHtml = items
     .map(
-      (item: any) => {
-        const qty = Number(item.quantity) || 1
-        const unitPrice = Number(item.unit_price) || 0
-        const lineTotal = unitPrice * qty
-        return `
+      (item: any) => `
       <tr>
         <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6;">
           <p style="margin: 0; color: #111827; font-size: 14px; font-weight: 500;">${item.product_title || item.title}</p>
           ${item.variant_title ? `<p style="margin: 2px 0 0; color: #6b7280; font-size: 13px;">Talla: ${item.variant_title}</p>` : ""}
         </td>
         <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6; text-align: center; color: #374151; font-size: 14px;">
-          ${qty}
+          ${item.qty}
         </td>
         <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6; text-align: right; color: #374151; font-size: 14px;">
-          ${formatPrice(lineTotal)}
+          ${formatPrice(item.lineTotal)}
         </td>
       </tr>`
-      }
     )
     .join("")
 
@@ -157,25 +162,25 @@ export default async function orderPlacedHandler({
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
         <tr>
           <td style="padding: 4px 0; color: #6b7280; font-size: 14px;">Subtotal</td>
-          <td style="padding: 4px 0; text-align: right; color: #374151; font-size: 14px;">${formatPrice(order.item_total)}</td>
+          <td style="padding: 4px 0; text-align: right; color: #374151; font-size: 14px;">${formatPrice(itemSubtotal)}</td>
         </tr>
         <tr>
           <td style="padding: 4px 0; color: #6b7280; font-size: 14px;">Envio</td>
-          <td style="padding: 4px 0; text-align: right; color: #374151; font-size: 14px;">${formatPrice(order.shipping_total)}</td>
+          <td style="padding: 4px 0; text-align: right; color: #374151; font-size: 14px;">${formatPrice(shipping)}</td>
         </tr>
-        ${order.discount_total ? `
+        ${discount ? `
         <tr>
           <td style="padding: 4px 0; color: #6b7280; font-size: 14px;">Descuento</td>
-          <td style="padding: 4px 0; text-align: right; color: #16a34a; font-size: 14px;">-${formatPrice(order.discount_total)}</td>
+          <td style="padding: 4px 0; text-align: right; color: #16a34a; font-size: 14px;">-${formatPrice(discount)}</td>
         </tr>` : ""}
-        ${order.tax_total ? `
+        ${tax ? `
         <tr>
           <td style="padding: 4px 0; color: #6b7280; font-size: 14px;">Impuestos</td>
-          <td style="padding: 4px 0; text-align: right; color: #374151; font-size: 14px;">${formatPrice(order.tax_total)}</td>
+          <td style="padding: 4px 0; text-align: right; color: #374151; font-size: 14px;">${formatPrice(tax)}</td>
         </tr>` : ""}
         <tr>
           <td style="padding: 12px 0 4px; color: #111827; font-size: 16px; font-weight: 700; border-top: 2px solid #e5e7eb;">Total</td>
-          <td style="padding: 12px 0 4px; text-align: right; color: #b80049; font-size: 16px; font-weight: 700; border-top: 2px solid #e5e7eb;">${formatPrice(order.total)} ${currencyCode}</td>
+          <td style="padding: 12px 0 4px; text-align: right; color: #b80049; font-size: 16px; font-weight: 700; border-top: 2px solid #e5e7eb;">${formatPrice(orderTotal)} ${currencyCode}</td>
         </tr>
       </table>
 
