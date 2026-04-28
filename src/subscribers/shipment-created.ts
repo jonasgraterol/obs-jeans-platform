@@ -83,7 +83,7 @@ export default async function shipmentCreatedHandler({
           ${item.title}
         </td>
         <td style="padding: 8px 0; border-bottom: 1px solid #f3f4f6; text-align: center; color: #374151; font-size: 14px;">
-          ${item.quantity}
+          ${Number(item.quantity)}
         </td>
       </tr>`
     )

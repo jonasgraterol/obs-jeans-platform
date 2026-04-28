@@ -50,9 +50,9 @@ export default async function orderPlacedHandler({
   const firstName = order.shipping_address?.first_name || ""
   const currencyCode = (order.currency_code || "MXN").toUpperCase()
 
-  const formatPrice = (amount: number | null | undefined) => {
-    if (amount == null) return "$0.00"
-    const value = amount / 100
+  const formatPrice = (amount: any) => {
+    const value = Number(amount)
+    if (!value && value !== 0) return "$0.00"
     return `$${value.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
   }
 
@@ -65,7 +65,7 @@ export default async function orderPlacedHandler({
           ${item.variant_title ? `<p style="margin: 2px 0 0; color: #6b7280; font-size: 13px;">Talla: ${item.variant_title}</p>` : ""}
         </td>
         <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6; text-align: center; color: #374151; font-size: 14px;">
-          ${item.quantity}
+          ${Number(item.quantity)}
         </td>
         <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6; text-align: right; color: #374151; font-size: 14px;">
           ${formatPrice(item.total)}
