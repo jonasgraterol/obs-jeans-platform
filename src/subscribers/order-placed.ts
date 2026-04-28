@@ -19,7 +19,7 @@ export default async function orderPlacedHandler({
       "created_at",
       "currency_code",
       "total",
-      "subtotal",
+      "item_total",
       "shipping_total",
       "tax_total",
       "discount_total",
@@ -51,26 +51,31 @@ export default async function orderPlacedHandler({
   const currencyCode = (order.currency_code || "MXN").toUpperCase()
 
   const formatPrice = (amount: any) => {
-    const value = Number(amount)
-    if (!value && value !== 0) return "$0.00"
+    const value = Math.abs(Number(amount))
+    if (isNaN(value)) return "$0.00"
     return `$${value.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
   }
 
   const itemsHtml = (order.items || [])
     .map(
-      (item: any) => `
+      (item: any) => {
+        const qty = Number(item.quantity) || 1
+        const unitPrice = Number(item.unit_price) || 0
+        const lineTotal = unitPrice * qty
+        return `
       <tr>
         <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6;">
           <p style="margin: 0; color: #111827; font-size: 14px; font-weight: 500;">${item.product_title || item.title}</p>
           ${item.variant_title ? `<p style="margin: 2px 0 0; color: #6b7280; font-size: 13px;">Talla: ${item.variant_title}</p>` : ""}
         </td>
         <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6; text-align: center; color: #374151; font-size: 14px;">
-          ${Number(item.quantity)}
+          ${qty}
         </td>
         <td style="padding: 12px 0; border-bottom: 1px solid #f3f4f6; text-align: right; color: #374151; font-size: 14px;">
-          ${formatPrice(item.total)}
+          ${formatPrice(lineTotal)}
         </td>
       </tr>`
+      }
     )
     .join("")
 
@@ -152,7 +157,7 @@ export default async function orderPlacedHandler({
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
         <tr>
           <td style="padding: 4px 0; color: #6b7280; font-size: 14px;">Subtotal</td>
-          <td style="padding: 4px 0; text-align: right; color: #374151; font-size: 14px;">${formatPrice(order.subtotal)}</td>
+          <td style="padding: 4px 0; text-align: right; color: #374151; font-size: 14px;">${formatPrice(order.item_total)}</td>
         </tr>
         <tr>
           <td style="padding: 4px 0; color: #6b7280; font-size: 14px;">Envio</td>
