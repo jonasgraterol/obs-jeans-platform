@@ -20,7 +20,8 @@ export default async function inviteCreatedHandler({
     return
   }
 
-  const inviteUrl = `https://admin.jeansobs.com/app/invite?token=${invite.token}`
+  const adminUrl = process.env.ADMIN_CORS?.split(",")[0] || "https://admin.jeansobs.com"
+  const inviteUrl = `${adminUrl}/app/invite?token=${invite.token}`
 
   await notificationService.createNotifications({
     to: invite.email,
