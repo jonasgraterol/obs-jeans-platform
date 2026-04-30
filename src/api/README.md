@@ -133,3 +133,26 @@ export default defineMiddlewares({
 ```
 
 The `matcher` property can be either a string or a regular expression. The `middlewares` property accepts an array of middleware functions.
+
+## OBS custom routes
+
+### `GET /admin/sales-report`
+
+Reporte de ventas para Jeany y WhatsApp interno.
+
+Query params:
+
+- `period`: `today` (default), `week`, `month` o `custom`.
+- `start` / `end`: fechas ISO para `period=custom`.
+- `compare`: `true` por defecto; usar `false` para omitir comparación contra el periodo anterior equivalente.
+- `status`: `completed` por defecto; usar `all` para incluir todos los estados.
+- `top`: número de productos en ranking, de `1` a `20`.
+
+Respuesta incluye:
+
+- `summary`: total vendido, pedidos, piezas y ticket promedio.
+- `comparison`: variación contra el periodo anterior.
+- `top_products`: productos más vendidos por unidades.
+- `daily_sales`: serie diaria para gráficas.
+- `chart_svg` y `chart_data_url`: gráfica básica lista para adjuntarse.
+- `whatsapp_message`: texto ya formateado con negritas tipo WhatsApp y montos en MXN.
