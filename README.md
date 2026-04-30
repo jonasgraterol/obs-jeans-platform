@@ -106,6 +106,17 @@ Product images and media are handled by the Medusa File Module. Currently using 
 | `SENDGRID_API_KEY` | SendGrid API key for emails | `SG.xxx` |
 | `SENDGRID_FROM` | Sender email address | `ventas@jeansobs.com` |
 
+## Internal Usage Guides
+
+Operational guides for the OBS Jeans team are available in [`docs/guia-uso`](./docs/guia-uso/README.md):
+
+- Cómo agregar productos
+- Cómo ajustar inventario
+- Cómo procesar órdenes
+- Cómo generar reportes
+- FAQ interno
+- Plan de screenshots paso a paso
+
 ## Deployment
 
 The application runs as a systemd service (`medusa.service`) behind Nginx with SSL.
