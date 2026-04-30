@@ -15,8 +15,8 @@ Dar al equipo una lectura rápida del estado operativo al inicio del día:
 ## Programación actual
 
 - **Nombre del job:** `obs-reporte-matutino`
-- **Horario:** lunes a sábado, 9:00 AM hora México.
-- **Cron UTC:** `0 15 * * 1-6`
+- **Horario:** lunes a sábado, 8:00 AM hora México.
+- **Cron UTC:** `0 14 * * 1-6`
 - **Destino:** grupo WhatsApp interno de OBS Jeans.
 - **Script:** `~/.hermes/scripts/obs_morning_report.py`
 
