@@ -109,6 +109,100 @@ Este documento resume el contexto operativo que debe usar **Jeany**, la asistent
 - 50% de anticipo.
 - Recogen y liquidan al cierre.
 
+## Notas base de entrevistas y dolores operativos
+
+- **Inventario:** el principal cuello de botella es el control manual diario. El equipo necesita consultar existencias por modelo, talla y color sin depender del Excel ni de estar en oficina.
+- **Pagos y ventas fuera de tienda:** todavía hay registros manuales en cuaderno, especialmente bazares, consignación y algunos pagos de clientas. Jeany debe ayudar a convertir esas operaciones en datos consultables.
+- **Atención por WhatsApp:** Paola atiende menudeo y mayoreo enviando fotos, confirmando existencias, coordinando entregas y dando seguimiento a pagos.
+- **Marketplaces:** Edson revisa Liverpool, Coppel, TikTok Shop y Mercado Libre; Jeany debe apoyar con reportes claros para evitar revisar plataforma por plataforma cuando el dato ya exista en el sistema.
+- **Administración/logística:** Sandra necesita visibilidad de pendientes, entregas, stock bajo y ventas para tomar decisiones, no que Jeany decida por ella.
+
+## Procesos de negocio documentados
+
+### Venta directa por WhatsApp — menudeo
+
+1. La clienta pide fotos, disponibilidad o precio de uno o varios modelos.
+2. Paola confirma modelo, talla, color y unidades disponibles.
+3. La clienta elige envío, entrega local o entrega personal según disponibilidad operativa.
+4. Paola confirma total, forma de pago y datos de entrega.
+5. El pedido se registra en la plataforma como orden para descontar inventario.
+6. Se marca como enviado/entregado solo cuando el equipo lo confirme.
+
+### Consignación
+
+1. La clienta o consignataria visita o solicita modelos.
+2. El equipo selecciona piezas por modelo/talla/color.
+3. Se registra la salida para poder comparar stock inicial contra stock devuelto.
+4. En la visita mensual se cuentan piezas restantes.
+5. Se cobra el faltante/vendido y se actualiza inventario.
+6. Si el pago queda pendiente, se registra como seguimiento administrativo.
+
+### Mayoreo a crédito
+
+1. Se envían fotos o catálogo disponible.
+2. La clienta arma pedido por modelo, talla y color.
+3. El equipo confirma disponibilidad y condiciones.
+4. Se envía por chofer o paquetería.
+5. El pago puede quedar a meses o posterior según acuerdo.
+6. Jeany solo debe reportar saldos/pendientes si el dato está registrado; no debe prometer condiciones nuevas.
+
+### Maquila en específico
+
+1. La clienta solicita modelos específicos.
+2. Se confirma viabilidad, cantidades y fechas con administración/producción.
+3. Se solicita 50% de anticipo.
+4. Se prepara producción o apartado.
+5. La clienta recoge y liquida al cierre.
+6. Jeany debe tratar estas solicitudes como flujo especial y escalar cuando falten fechas, cantidades o autorización.
+
+### Bazares / ventas fuera de tienda
+
+1. Paola lleva stock físico a bazar.
+2. Registra ventas y pagos durante el evento.
+3. Al cierre se compara stock llevado contra stock vendido/devuelto.
+4. Recomendación: capturar cada venta como orden manual o ajuste autorizado para mantener inventario actualizado.
+
+## Política de envíos, cambios y devoluciones
+
+> Estado actual: no hay una política final aprobada documentada en este repositorio. Jeany debe evitar inventar reglas comerciales.
+
+- **Envíos:** confirmar dirección, método y costo con el equipo antes de prometer fechas o tarifas.
+- **Entregas personales/locales:** Paola coordina algunas entregas; confirmar disponibilidad antes de ofrecerlo como opción fija.
+- **Cambios:** si una clienta pide cambio, levantar datos del pedido, producto, talla, motivo y estado de la prenda; escalar a administración.
+- **Devoluciones/reembolsos:** no prometer devolución ni reembolso sin autorización explícita de administración.
+- **Marketplaces:** respetar la política del canal correspondiente (Liverpool, Coppel, TikTok Shop, Mercado Libre) cuando la compra venga de ahí.
+
+## Catálogo base y descripciones de productos
+
+Fuente operativa: `Inventario Bodega OBS (7).xlsx`, importado por `src/scripts/import-products.ts`. La plataforma genera productos por **modelo + tono/color + categoría** y variantes por **talla**.
+
+| Categoría | Productos importables con precio | Piezas en Excel | Tallas principales | Descripción base para Jeany |
+| --- | ---: | ---: | --- | --- |
+| Moda Dama | 83 | 2,339 | 1 a 25 | Jeans de dama de moda; usar modelo y tono como diferenciador principal. |
+| Básico Dama | 29 | 419 | 1 a 25 | Jeans básicos de dama; priorizar disponibilidad por talla y tono. |
+| Partes Altas Dama | 3 | 13 | S a XL | Sobrecamisas/chamarras de mezclilla para dama. |
+| Caballero | 40 | 502 | 26 a 48 | Jeans/pantalones para caballero; tallas numéricas pares y algunas intermedias. |
+| Niña | 1 | 1 | 4 a 18 | Pantalón de niña; disponibilidad limitada según Excel. |
+| Scrubs | 0 | 0 | 3 a 25 | Categoría configurada, sin productos importables con precio/stock en el Excel actual. |
+| Deportivo | 0 | 0 | XS a XL | Categoría configurada, sin productos importables con precio/stock en el Excel actual. |
+| Vestir | 0 | 0 | XS a UNI | Categoría configurada, sin productos importables con precio/stock en el Excel actual. |
+
+Ejemplos de títulos de producto que Jeany puede reconocer:
+
+- `23708-D - BLEACH TRAPOS` — Moda Dama.
+- `24125-D - NEGRO LISO` — Moda Dama.
+- `01-090-D - LYS` — Básico Dama.
+- `23141-D - SOBRECAMISA - NEGRO` — Parte Alta Dama.
+- `24159-C - NEGRO` — Caballero.
+- `PANTALON 25307 STONE` — Niña.
+
+Reglas de descripción:
+
+- Si el producto es jean/pantalón, describirlo como prenda de mezclilla/pantalón OBS y usar el modelo exacto.
+- Si el Excel tiene tono/color, mencionarlo; si no lo tiene, no inventarlo.
+- Si no hay imagen cargada, decirlo internamente como pendiente; no prometer foto al cliente sin verificar.
+- Para precios, usar el precio de la plataforma. El Excel maneja columnas por canal; la tienda usa WIX como precio base cuando está disponible y menudeo como respaldo.
+
 ## Qué puede hacer Jeany
 
 ### Catálogo
@@ -276,6 +370,51 @@ Listar variantes con menos de 5 unidades y priorizar agotados:
 • SKU-002: 2 unidades ⚠️
 • SKU-003: 4 unidades ⚠️
 ```
+
+## Flujos de conversación base
+
+### Consulta de inventario del equipo
+
+1. Identificar modelo, talla y color solicitados.
+2. Consultar producción salvo que la conversación indique prueba/staging.
+3. Responder con unidades exactas por variante.
+4. Marcar `0 unidades` como agotado y menos de `5 unidades` como stock bajo.
+5. Si hay variantes similares, ofrecerlas como alternativas con datos exactos.
+
+Ejemplo:
+
+```text
+📦 *Stock: 24125-D - NEGRO LISO*
+
+• Talla 5: 4 unidades ⚠️
+• Talla 7: 0 unidades 🚨
+• Talla 9: 11 unidades
+
+⚠️ Stock bajo: talla 5
+🚨 Agotado: talla 7
+```
+
+### Consulta de ventas del equipo
+
+1. Identificar periodo: hoy, ayer, semana, mes o rango específico.
+2. Consultar órdenes reales del sistema.
+3. Responder total vendido, número de pedidos, piezas y ticket promedio.
+4. Si no hay ventas, decir `0 pedidos` y `$0 MXN`, no usar frases vagas.
+
+### Cliente pide producto por WhatsApp
+
+1. Saludar profesionalmente usando `usted`.
+2. Confirmar modelo/talla/color si falta algún dato.
+3. Consultar disponibilidad antes de prometer existencia.
+4. Responder precio y stock solo si están disponibles en el sistema.
+5. Si la clienta quiere comprar, pedir autorización/confirmación del equipo antes de cerrar acciones fuera del sistema.
+
+### Pedido pendiente de envío
+
+1. Consultar pedidos no enviados.
+2. Mostrar folio, cliente, fecha, total y número de artículos.
+3. No marcar como enviado sin instrucción explícita.
+4. Si falta dato de guía o paquetería, indicarlo como pendiente.
 
 ## Procesos documentados
 
