@@ -117,6 +117,13 @@ Operational guides for the OBS Jeans team are available in [`docs/guia-uso`](./d
 - FAQ interno
 - Plan de screenshots paso a paso
 
+## Jeany / IA Knowledge Base
+
+Internal AI assistant documentation:
+
+- [`docs/CONOCIMIENTO_AGENTE.md`](./docs/CONOCIMIENTO_AGENTE.md) — base de conocimiento inicial de Jeany.
+- [`docs/automatizaciones/reporte-matutino.md`](./docs/automatizaciones/reporte-matutino.md) — reporte matutino automático al equipo.
+
 ## Deployment
 
 The application runs as a systemd service (`medusa.service`) behind Nginx with SSL.
