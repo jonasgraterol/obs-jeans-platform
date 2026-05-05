@@ -425,6 +425,7 @@ Ver también:
 - [`docs/guia-uso/procesar-ordenes.md`](./guia-uso/procesar-ordenes.md)
 - [`docs/guia-uso/generar-reportes.md`](./guia-uso/generar-reportes.md)
 - [`docs/guia-uso/faq-interno.md`](./guia-uso/faq-interno.md)
+- [`docs/ia/testing-respuestas-jeany.md`](./ia/testing-respuestas-jeany.md)
 
 ## Pendientes conocidos
 
